@@ -6,8 +6,21 @@ package lang
 object OptionDemo extends App{
 
 
-  test_exists()
 
+  val map = Map("a" ->"b")
+  println(test_get(map get ("c")))
+  println(map.get("ccc") == null )
+
+
+  /**
+   * 常用 Option 操作 
+   * @param value
+   * @return
+   */
+  def test_get(value:Option[String]) = value match{
+    case Some(x) =>x
+    case None=>"?"
+  }
 
 
   def test_flatMap():Unit = {
