@@ -13,11 +13,57 @@ case class C(name:String) extends A
 object caseDemo extends App{
 
 
-  test_sealed(B("b"))
+
+  //for 循环中的模式匹配
+  val map = Map(1 -> "a", 2 -> "b")
+
+  for((k,v)<- map){
+    println(k+":"+v)
+  }
 
 
 
 
+  //定义为一个简单的函数
+  val second: List[Int] => Int = {
+    case x :: y :: _ => y
+  }
+
+  //定义类型为一个偏函数,编译器会将此定义进行翻译
+  //翻译的结果就是 second3
+
+  val second2:PartialFunction[List[Int],Int] = {
+    case x::y::_ =>y
+  }
+
+  val second3 = new PartialFunction[List[Int], Int] {
+    override def isDefinedAt(x: List[Int]): Boolean = x match {
+      case x :: y :: _ => true
+      case _ => false
+    }
+
+    override def apply(v1: List[Int]): Int = v1 match {
+      case x :: y :: _ => y
+      case _ => 0
+    }
+  }
+
+
+  val list = List(1,2,3)
+//  println(second(Nil))
+  println(second.getClass)
+  println(second2.getClass)
+
+  //用模式匹配来代替函数字面量 参数:类型=>{case 体}
+  val fun: Option[Int] => Int = {
+    case Some(x) => x
+    case None => 0
+  }
+
+  //一般的函数字面量定义(参数:类型)=>{方法体}
+  val fun2 = (value:Option[Int])=>{
+    value.get
+  }
 
   def test_sealed(obj:A) = obj match {
     case B(_)=> println("B")
